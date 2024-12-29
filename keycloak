@@ -1,0 +1,152 @@
+
+
+// integrate docker compose file in application.yml and then run docker compose after that go on port and login using username and password provided in application.yml 
+
+// testing 
+
+realm
+user
+credential
+clients
+
+create realm , create user and then go to  credentials and set password . after that crate clients 
+clients => create client id  next,next,save
+
+after testing we can see in postman that all things is working fine . but whatever we are doing now manually we have to do that thing using spring-keycloak sdk 
+
+// in dependency we are installing lombok, spring web, spring security, oauth2Authorization Server
+
+// for connecting spring with keycloak we use maven repository Keycloak Admin REST Client » 26.0.0
+
+<!-- https://mvnrepository.com/artifact/org.keycloak/keycloak-admin-client -->
+<dependency>
+    <groupId>org.keycloak</groupId>
+    <artifactId>keycloak-admin-client</artifactId>
+    <version>26.0.0</version>
+</dependency>
+
+
+for the client go in clients section of keycloak and select admin-cli and for the client secret turn on client authentication under capability config anf check mark service accounts roles
+then save . (so this account roles are responsible for managing creating user roles for keycloak) now go to credentials options and copy client secret and paste it in our application.yml
+file in our spring boot 
+
+
+
+// =====================================================================  CREATE USER ============================================================================================
+
+// create a user  
+
+// create model package and inside that package create user record class 
+
+  public record User(String username,String password,String firstName,String lastName) {}
+
+// create service package inside that package create user service 
+(for that create userservice interface)    here we take username as useremail 
+
+
+// for user info
+UserRepresentation ==> it has username,firstname,lastname,email,account is valid or not , email verification 
+
+// for user credentials 
+CredentialRepresentation ==> password  (value,type)
+
+          UserRepresentation <=== set === CredentialRepresentation
+
+                   KeyCloak <===set === UserResource <== set (create) ===  UserRepresentation <=== set === CredentialRepresentation
+
+
+how i set this user to keycloak   for registering this user to keyclaok we have UserResource
+
+UsersResource usersResource=keycloak.realm(realm).users();    // UsersResource usersResource=keycloak.realm(realm).users();  iska matlab ki ye method hai user ko add karne ka keycloak me 
+Response response = usersResource.create(userRepresentation);
+
+
+Keycloak
+  ||
+Realm         ====> UserResource [.create(UserRepresentation)]
+  ||
+users    
+
+
+
+
+=======================  explanation 
+ // for user details
+
+        UserRepresentation  userRepresentation= new UserRepresentation();
+        userRepresentation.setEnabled(true);
+        userRepresentation.setFirstName(user.firstName());
+        userRepresentation.setLastName(user.lastName());
+        userRepresentation.setUsername(user.username());
+        userRepresentation.setEmail(user.username());
+        userRepresentation.setEmailVerified(false);
+
+        // for credentials
+        CredentialRepresentation credentialRepresentation=new CredentialRepresentation();
+        credentialRepresentation.setValue(user.password());
+        credentialRepresentation.setType(CredentialRepresentation.PASSWORD);
+
+        // set password in user
+        userRepresentation.setCredentials(List.of(credentialRepresentation));
+
+        // how i set this user to keycloak
+
+       UsersResource usersResource=keycloak.realm(realm).users();
+       Response response = usersResource.create(userRepresentation);
+
+// ================================================================== vvi for creating user ========================================================================
+
+// note: to create a user we need some type of permission so go to clients => admin-cli => service-accounts-roles => assign roles => search manage-users  and assign 
+now when we hit json from postman user gets created 
+
+// now we can login with the username and password 
+
+
+
+// ====================================================================== VERIFY EMAIL ===========================================================================================
+
+// before sending email we have to configure something in keycloak 
+==> go to top right bar in admin dropdown and switch to admin account and fill the correct email for admin => save . after that come to main console where we are earlier. 
+==> Realm Setting (sidebar) ==> email (put here admin email which we fill in admin section) and then test connection and save 
+
+
+mail.host=smtp.gmail.com
+mail.port=587
+mail.username=cmsfutureleaders@gmail.com
+mail.password=dqlt znuv srgq ubuw
+mail.properties.mail.smtp.starttls.enable=true
+
+when we receive email we have to verify it in clicking that link which is coming vua email once it is verified we will see that automatically in user section it is showing that
+email is verified 
+
+// for sending email verification 
+
+
+userId
+  |
+  |
+UserResource ==> get user by userId ==> it will give particular user and on that user we have to apply .sendVerifyEmail() to verify the email for this user 
+
+ public void sendVerificationEmail(String userId) {
+        UsersResource usersResource=keycloak.realm(realm).users();
+        usersResource.get(userId).sendVerifyEmail();
+}
+
+// now from postman we can try 
+
+
+
+// delete user
+
+// forgot password 
+
+searchByUsername  returns List<RoleRepresentation>
+
+
+// assign roles to the user 
+
+
+
+
+
+
