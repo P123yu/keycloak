@@ -15,7 +15,7 @@ server.port=6700
 # ================================
 
 app.keycloak.admin.clientId=admin-cli
-app.keycloak.admin.clientSecret=5pM1VZxt5yWsHqVQGKHlpNGTE1Y9aRkh
+app.keycloak.admin.clientSecret=YDdaOUqiRXBal8Nie849lh5F8owjfpdV
 app.keycloak.serverUrl=http://localhost:8080
 app.keycloak.realm=StartSmart
 
@@ -37,17 +37,21 @@ keycloak.bearer-only=true
 # PostgreSQL Database Configuration
 # ================================
 
-spring.datasource.url=jdbc:postgresql://localhost:5432/spring-keycloak
-spring.datasource.username=postgres
-spring.datasource.password=Piyush@l1
+spring.datasource.url=jdbc:postgresql://localhost:5432/keycloak
+spring.datasource.username=keycloak
+spring.datasource.password=password
 spring.datasource.driver-class-name=org.postgresql.Driver
+
 
 spring.jpa.hibernate.ddl-auto=none
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 
+kc.features=token-exchange,admin-fine-grained-authz
+
 # ================================
 # Logging Configuration
+
 # ================================
 
 logging.level.org.keycloak=DEBUG
