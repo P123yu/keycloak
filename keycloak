@@ -26,7 +26,7 @@ after testing we can see in postman that all things is working fine . but whatev
 </dependency>
 
 
-for the client go in clients section of keycloak and select admin-cli and for the client secret turn on client authentication under capability config anf check mark service accounts roles
+for the client go in clients section of keycloak and select admin-cli and for the client secret turn on client authentication under capability config and check mark service accounts roles
 then save . (so this account roles are responsible for managing creating user roles for keycloak) now go to credentials options and copy client secret and paste it in our application.yml
 file in our spring boot 
 
