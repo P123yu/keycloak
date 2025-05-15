@@ -1,0 +1,55 @@
+# ================================
+# Application Info
+# ================================
+
+spring.application.name=spring-keycloak-revise
+
+# ================================
+# Server Port
+# ================================
+
+server.port=6700
+
+# ================================
+# Keycloak Admin (Custom - used in code to automate setup)
+# ================================
+
+app.keycloak.admin.clientId=admin-cli
+app.keycloak.admin.clientSecret=5pM1VZxt5yWsHqVQGKHlpNGTE1Y9aRkh
+app.keycloak.serverUrl=http://localhost:8080
+app.keycloak.realm=StartSmart
+
+# ================================
+# Keycloak Adapter Configuration (Standard Spring Boot Keycloak Adapter)
+# ================================
+
+# Keycloak realm and client for authentication
+
+#keycloak.resource=springboot-client
+keycloak.public-client=true
+keycloak.bearer-only=true
+
+# Security constraints
+#keycloak.security-constraints[0].authRoles=USER
+#keycloak.security-constraints[0].securityCollections[0].patterns[0]=/api/*
+
+# ================================
+# PostgreSQL Database Configuration
+# ================================
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/spring-keycloak
+spring.datasource.username=postgres
+spring.datasource.password=Piyush@l1
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+# ================================
+# Logging Configuration
+# ================================
+
+logging.level.org.keycloak=DEBUG
+logging.level.org.springframework.security=DEBUG
+logging.level.org.hibernate.SQL=DEBUG
