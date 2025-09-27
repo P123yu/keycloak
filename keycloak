@@ -142,8 +142,76 @@ UserResource ==> get user by userId ==> it will give particular user and on that
 
 searchByUsername  returns List<RoleRepresentation>
 
+// -------------------------------------------------------------------------------------------------------------------------------------------------
 
-// assign roles to the user   
+// assign roles to the user
+
+// 1. first
+
+go to clients ==> admin-cli ==> service account roles  ==> search realm-admin or admin and assign it 
+
+
+// second 
+
+1. go to Realm roles
+2.create role like ADMIN
+
+
+// now in application.props 
+
+add this line 
+
+
+spring.security.oauth2.resourceserver.jwt.issuer-uri=${keycloak.serverUrl}/realms/${keycloak.realm}
+
+
+// application.properties
+
+spring.application.name=spring-keycloak
+
+
+// use dependency 
+
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-authorization-server</artifactId>
+</dependency>
+
+
+// now from postman do 
+
+curl --location --request POST 'http://localhost:5000/role/assign?userId=c64e384b-262a-4fb5-88aa-50090c12584f&roleName=ADMIN' \
+--header 'Authorization: Bearer Token \
+--header 'Cookie: JSESSIONID=870EF9F5FA578078BDAB7C59DF1FE39A'
+
+
+// -------------------------------------------------------------------------------------------------------------------------------------------------
+
+// final app.props 
+
+
+
+keycloak.admin.clientId= admin-cli
+keycloak.admin.clientSecret= JMXG62Y1mCHQZ7ZSemzbA7j3KBZ7DjYU
+keycloak.realm= spring-practice
+keycloak.serverUrl= http://localhost:8080
+
+server.port=5000
+
+
+
+# important for role based authentication
+
+# here authorization server will validate bearer token first
+
+spring.security.oauth2.resourceserver.jwt.issuer-uri=${keycloak.serverUrl}/realms/${keycloak.realm}
+
+
+logging.level.org.springframework.security=DEBUG
+logging.level.org.springframework.web=DEBUG
+logging.level.org.springframework.security.oauth2=DEBUG
+logging.level.org.keycloak=DEBUG
+
 
 
 
