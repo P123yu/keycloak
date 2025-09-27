@@ -143,7 +143,25 @@ UserResource ==> get user by userId ==> it will give particular user and on that
 searchByUsername  returns List<RoleRepresentation>
 
 
-// assign roles to the user 
+// assign roles to the user   
+
+
+
+
+
+// ======================================================= For login ================================================================
+
+we want endpoints so for that 
+1. click to Realm settings
+2. on downside and you can see OpenId endpoints 
+3. copy end points and use it in postman 
+
+curl --location 'http://localhost:8080/realms/spring-practice/protocol/openid-connect/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'client_id=piyush-client' \
+--data-urlencode 'grant_type=password' \
+--data-urlencode 'username=piyush.kumarcoep@gmail.com' \
+--data-urlencode 'password=p123'
 
 
 
